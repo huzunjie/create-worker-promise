@@ -22,7 +22,10 @@ export default function createWorkerByUri(url, options) {
         }
       }).then(blob => {
         const blobUrl = window.URL.createObjectURL(blob);
-        resolve(new Worker(blobUrl, options));
+        const worker = new Worker(blobUrl, options);
+        // 供业务方自己 window.URL.revokeObjectURL(blobUrl);
+        worker._blobUrl = blobUrl;
+        resolve(worker);
       }).catch(reject);
     } else {
       try{
@@ -46,7 +49,10 @@ export function createWorkerByTxt(txt, options) {
     try{
       const workerJsBlob = new Blob([txt], { type: 'application/javascript' });
       const blobUrl = URL.createObjectURL(workerJsBlob);
-      resolve(new Worker(blobUrl, options));
+      const worker = new Worker(blobUrl, options);
+      // _blobUrl 供业务方自己 window.URL.revokeObjectURL(blobUrl);
+      worker._blobUrl = blobUrl;
+      resolve(worker);
     }catch(e) {
       reject(e);
     }
