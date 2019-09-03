@@ -1,4 +1,25 @@
-import { isObject, isFunction } from './index.js';
+
+/**
+ * @Function type
+ * @description 取得对象obj的类型
+ * @param  {Any} obj  目标对象
+ * @return {String}
+ */
+export function type(obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1);
+}
+
+/**
+ * @Function isArray, isString, isFunction, isObject, isNumber, isBoolean
+ * @description 判断对象是否某类型
+ * @param  {Any} obj  目标对象
+ * @return {Boolean}
+ */
+const typesFun = {};
+'Array String Function Object Number Boolean'.split(' ').forEach(typeName => {
+  typesFun['is' + typeName] = obj => type(obj) === typeName;
+});
+export const {isArray, isString, isFunction, isObject, isNumber, isBoolean} = typesFun;
 
 /** 基于Blob创建 Worker */
 export function createWorkerByBlob(blob, options) {
